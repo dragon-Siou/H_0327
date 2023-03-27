@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script
+  src="https://code.jquery.com/jquery-3.6.4.min.js"
+  integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+  crossorigin="anonymous"></script>
+
+        <style>
+            #block1{
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                height: 100px;
+                width: 100px;
+                padding: 10px;
+                background-color: rgb(28, 28, 28);
+                transform:rotate(5deg)
+            }
+            #block2{
+                position: relative;
+                top: 50%;  
+                left: 50%;
+                transform: translate(-50%, -50%);
+                height: 80px;
+                width: 80px;
+                background-color: rgb(30, 153, 201);
+            }
+
+            #startButton{
+                position: absolute;
+                width: 80px;
+                height: 40px;
+                top: 500px;
+                left: 50%;
+            }
+
+            .rotate-animation{
+                animation:rotate-block 2s ease-in infinite alternate;
+            }
+            
+            @keyframes rotate-block {
+                0%{transform:rotate(0deg);}
+                100%{transform:rotate(180deg);}
+            }
+        </style>
+    </head>
+    <body>
+        <div id="block1" class="rotate-animation">
+            <div id="block2">
+
+            </div>
+        </div>
+
+        <button id="startButton">開始</button>
+
+        <script>
+            $(function(){
+                $("#startButton").bind("click",function(){
+                    $("#startButton").addClass("rotate-animation")
+                })
+            })
+        </script>
+    </body>
+</html>

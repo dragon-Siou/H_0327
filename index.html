@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script
+  src="https://code.jquery.com/jquery-3.6.4.min.js"
+  integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+  crossorigin="anonymous"></script>
+
+    <style>
+
+        .box{
+            width: 200px;
+            height: 200px;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .element{
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+        }
+
+        .success{
+            background-color: white;
+        }
+
+        .start{
+            position: absolute;
+            top: 50%;
+        }
+
+        .time{
+            position: absolute;
+            top: 40%;
+        }
+
+    </style>
+
+    </head>
+    <body>
+
+        <div class="box">
+
+        </div>
+
+        <div class="time">0</div>
+        <button class="start">開始</button>
+
+        <script>
+            
+            isStart = false
+            isSuccee = false
+
+            check1=null
+            check2=null
+
+            successCount=0;
+
+            $(function(){
+
+                $(".start").bind("click",function(){
+                    start();
+                })
+
+                let imageArray = [0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7]
+                //打亂
+                for(let i=0; i<imageArray.length ;i++){
+                    let random=Math.floor(Math.random()*imageArray.length);
+                    let temp = imageArray[i]
+                    imageArray[i] = imageArray[random]
+                    imageArray[random]=temp
+                }
+                //alert(imageArray)
+
+                for(let i=0; i<imageArray.length ;i++){
+                    
+                    let img = $("<img>")
+                    img.attr("id",i)
+                    img.addClass("element")
+                    //img.attr("src", `./image/image${imageArray[i]}.jpg`)
+                    img.attr("src", "./image/image_blank.jpg")
+                    img.attr("data",imageArray[i])
+                    img.bind("click", function(){
+                        //alert($(this).attr("data"))
+                       
+                        if($(this).hasClass("success")){
+                            return
+                        }
+
+                        if(!isStart){
+                            alert("請按開始！")
+                            return
+                        }
+
+                        clickElement($(this))
+                        
+                    })
+                    $(".box").append(img)
+                }
+                
+            })
+
+            function clickElement(element){
+                //兩個都有，先重置
+                if(check1 != null && check2 != null){
+                    check1.attr("src","./image/image_blank.jpg")
+                    check2.attr("src","./image/image_blank.jpg")
+                    check1=null
+                    check2=null
+
+                }
+
+                //都沒有
+                if(check1 == null){
+                    check1=element
+                    check1.attr("src",`./image/image${check1.attr("data")}.jpg`)
+                    return
+                }
+
+                //有一個了，要配對
+                if(check2 == null){
+
+                    //按到同一個
+                    if(check1.attr("id") == element.attr("id")){
+                        return;
+                    }
+
+                    check2 = element
+                    check2.attr("src",`./image/image${check2.attr("data")}.jpg`)
+                    //配對成功
+                    if(check1.attr("data") == check2.attr("data")){
+                        check1.addClass("success")
+                        check1.attr("src","./image/image_white.jpg")
+                        check2.addClass("success")
+                        check2.attr("src","./image/image_white.jpg")
+                        check1 = null
+                        check2 = null
+                        successCount += 2;
+                    }
+                    
+                    
+                }
+
+                if(successCount == 16){
+                    success()
+                }
+                
+
+            }
+
+            function success(){
+                isSuccee = true
+                alert(`恭喜通關，花了${time}秒`)
+
+            }
+
+            function start(){
+                
+                if(!isStart){
+                    setTimeout(timer, 100)
+                }
+                
+                isStart = true
+            }
+
+
+            time = 0;
+            function timer(){
+                
+                if(isSuccee){
+                    return
+                }
+
+                time += 0.1
+                $(".time").text(time)
+                setTimeout(timer, 100)
+            }
+
+
+        </script>
+    </body>
+</html>
